@@ -26,7 +26,7 @@ function setup() {
 
 function draw() {
     if (tick % 50 === 0) {
-        if (random(startingProb) > prob) {
+        if (random(startingProb) > prob && list.length < 10) {
             list.push(new Obstacle(random(width), random(width / 4)));
         } else {
             prob -= .5;

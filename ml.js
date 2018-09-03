@@ -7,11 +7,13 @@
  * 
  */
 
-const NEURONS = 6;
+// const inputLayer = tf.input({shape: [5]});
+
+const NEURONS = 18;
  
 const hiddenLayer = tf.layers.dense({
     units: NEURONS,
-    inputShape: [2],
+    inputShape: [10, 3],
     activation: 'sigmoid',
     kernelInitializer: 'leCunNormal',
     useBias: true,
@@ -24,6 +26,7 @@ const outputLayer = tf.layers.dense({
 
 const model = tf.sequential();
  
+// model.add(inputLayer);
 model.add(hiddenLayer);
 model.add(outputLayer);
 
@@ -31,9 +34,12 @@ model.add(outputLayer);
 model.compile({ loss: 'meanSquaredError', optimizer: 'sgd' });
 
 function predict(){
-    return tf.tidy(() =>  {
-        return tensor.add(tf.randomUniform(tensor.shape, min, max));
-    });    
+
+    model.predict(tf.ones([null, 2]))
+
+    // return tf.tidy(() =>  {
+    //     return tensor.add(tf.randomUniform(tensor.shape, 0, width));
+    // });    
 }
 
 function learningSetup(){
