@@ -31,8 +31,8 @@ Player.prototype.update = function(){
         if (this.collide(obj)) {
             this.died = true;
             // console.log("died");
-            noLoop();
-            alert("You died with a score of " + this.score);
+            restart();
+            // alert("You died with a score of " + this.score);
         }
     }
     if(!this.died){
@@ -47,7 +47,11 @@ Player.prototype.update = function(){
 };
 
 Player.prototype.draw = function(){
-    ellipse(this.x, this.y, this.width, this.height);
+    // ellipse(this.x, this.y, this.width, this.height);
+
+    triangle(this.x, this.y,
+        this.x + (this.width / 2), this.y + this.height,
+        this.x - (this.width / 2), this.y + this.height);
 };
 
 Player.prototype.shoot = function(){

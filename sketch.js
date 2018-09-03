@@ -5,7 +5,12 @@ let list = [];
 let projectiles = [];
 let player;
 
+let startingProb = 10000;
+let prob = 99999;
+let tick = 0;
+
 function setup() {
+    prob = startingProb - 1;
     createCanvas(width, height);
     background(127);
 
@@ -14,17 +19,17 @@ function setup() {
     if(!sessionStorage.highScore){
         sessionStorage.highScore = 0;
     }
+
+    learningSetup();
 }
 
-let prob = 99999;
-let tick = 0;
 
 function draw() {
     if (tick % 50 === 0) {
-        if (random(100000) > prob) {
+        if (random(startingProb) > prob) {
             list.push(new Obstacle(random(width), random(width / 4)));
         } else {
-            prob--;
+            prob -= .5;
         }
     }
 
@@ -52,7 +57,9 @@ function draw() {
         }
     }
 
-    player.targetX = mouseX;
+    learningTick();
+
+    // player.targetX = mouseX;
     player.update();
     player.draw();
     text(player.score + " / " + sessionStorage.highScore, 20, 10, 200, 30);
@@ -60,4 +67,34 @@ function draw() {
 
 function mousePressed(){
     player.shoot();
+}
+
+function restart(){
+    noLoop();
+    showStats();
+    setTimeout(function(){
+        list = [];
+        projectiles = [];
+
+        prob = startingProb - 1;
+
+        player = new Player();
+
+        loop();
+        
+    }, 250);
+}
+
+function showStats(){
+    let text = player.score + " - " + player.tick;
+    let div = document.createElement("div");
+    div.appendChild(document.createTextNode(text));
+
+    let parent = document.getElementById("results");
+    if(!parent){
+        parent = document.createElement("p");
+        parent.setAttribute("id", "results");
+        document.body.appendChild(parent);
+    }
+    parent.insertBefore(div, parent.firstChild);
 }
